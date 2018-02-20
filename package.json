@@ -1,6 +1,6 @@
 {
   "name": "react-leaflet-magnifying-glass",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "React wrapper of Leaflet.MagnifyingGlass. Add a 'magnifying glass' effect to a Leaflet map, able to display a portion of the map in a different zoom (and actually display different content).",
   "main": "dist/react-leaflet-magnifying-glass.min.js",
   "scripts": {
