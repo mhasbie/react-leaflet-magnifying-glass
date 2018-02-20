@@ -28,7 +28,6 @@ import MagnifyingGlassControl from 'react-leaflet-magnifying-glass';
 
 const options = {
 	position: 'topleft',
-	forceSeparateButton: false,
 	radius: 100,
 	zoomOffset: 3
 };
@@ -48,10 +47,14 @@ const options = {
 Option          | Type      | Default | Description
 --------------- | --------- | ------- | -------------
 `position`      | `string`  | `topleft`    | Magnifier control position. One of (`topleft`,`topright`,`bottomleft`,`bottomright`).
-`forceSeparateButton`   | `boolean`     | `false`    | `true` - Detached control button from `zoom` control buttons. `false` - attached control button to `zoom` control button.
 `radius`        | `Integer` | `100`   | The radius of the magnifying glass, in pixels.
 `zoomOffset`    | `Integer` | `3`     | The zoom level offset between the main map zoom and the magnifying glass.
 `fixedZoom`     | `Integer` | `-1`    | If different than `-1`, defines a fixed zoom level to always use in the magnifying glass, ignoring the main map zoom and the `zoomOffet` value.
+
+
+# TODO
+
+- Support magifying `Leaflet.markercluster` layer
 
 
 # Credits
