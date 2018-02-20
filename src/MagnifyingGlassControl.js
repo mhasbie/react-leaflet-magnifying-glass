@@ -15,7 +15,6 @@ export default class MagnifyingGlassControl extends MapControl {
 		this.layers = {};
 		
 		map.on('layeradd', (e) => {
-			console.log(e);
 			this._addLayer(e);
 		});
 		map.on('layerremove', (e) => {

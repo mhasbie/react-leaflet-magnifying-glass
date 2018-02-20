@@ -135,7 +135,6 @@ return /******/ (function(modules) { // webpackBootstrap
 				this.layers = {};
 
 				map.on('layeradd', function (e) {
-					console.log(e);
 					_this2._addLayer(e);
 				});
 				map.on('layerremove', function (e) {
