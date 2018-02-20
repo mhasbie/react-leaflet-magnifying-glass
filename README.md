@@ -54,7 +54,7 @@ Option          | Type      | Default | Description
 
 # TODO
 
-- Support magifying `Leaflet.markercluster` layer
+- Support magnifying `Leaflet.markercluster` layer
 
 
 # Credits
