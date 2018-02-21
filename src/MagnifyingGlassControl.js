@@ -13,12 +13,16 @@ export default class MagnifyingGlassControl extends MapControl {
 		const { map } = this.context;
 		const { position = 'topleft', forceSeparateButton = false } = props;
 		this.layers = {};
+		this.mounted = false;
 		
 		map.on('layeradd', (e) => {
 			this._addLayer(e);
 		});
 		map.on('layerremove', (e) => {
 			this._removeLayer(e);
+		});
+		map.on('unload', (e) => {
+			this.mounted = false;
 		});
 		const controlOptions = {
 			position,
@@ -27,9 +31,17 @@ export default class MagnifyingGlassControl extends MapControl {
 		return L.control.magnifyingglass(null, controlOptions);
 	}
 
+	componentDidMount() {
+		this.mounted = true;
+	}
+
+	componentWillUnmount() {
+		this.mounted = false;
+	}
+
 	_addLayer(e) {
 		const { layer } = e;
-		if (layer.options.isMagnifyingGlassLayer) return;
+		if (layer.options.isMagnifyingGlassLayer) return; // Do not add the magnifying glass layer to the list
 		const nested = (option) => {
 			const allOptions = _.values(option);
 			return _.some(allOptions, (opt) => opt instanceof L.Layer);
@@ -40,12 +52,13 @@ export default class MagnifyingGlassControl extends MapControl {
 
 	_removeLayer(e) {
 		const { layer } = e;
-		if (layer.options.isMagnifyingGlassLayer) return;
+		if (layer.options.isMagnifyingGlassLayer) return; // Ignore the magnifying glass layer events
 		delete this.layers[layer._leaflet_id];
 		this._updateMagnifyingGlass();
 	}
 	
 	_updateMagnifyingGlass() {
+		if (!this.mounted) return;
 		const { map } = this.context;
 		const { position = 'topleft', forceSeparateButton = false, radius = 100, zoomOffset = 3, fixedZoom = -1 } = this.props;
 		const magnifying = map.hasLayer(this.magnifyingGlass);

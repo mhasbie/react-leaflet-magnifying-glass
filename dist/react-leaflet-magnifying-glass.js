@@ -133,12 +133,16 @@ return /******/ (function(modules) { // webpackBootstrap
 				    forceSeparateButton = _props$forceSeparateB === undefined ? false : _props$forceSeparateB;
 
 				this.layers = {};
+				this.mounted = false;
 
 				map.on('layeradd', function (e) {
 					_this2._addLayer(e);
 				});
 				map.on('layerremove', function (e) {
 					_this2._removeLayer(e);
+				});
+				map.on('unload', function (e) {
+					_this2.mounted = false;
 				});
 				var controlOptions = {
 					position: position,
@@ -147,11 +151,21 @@ return /******/ (function(modules) { // webpackBootstrap
 				return _leaflet2.default.control.magnifyingglass(null, controlOptions);
 			}
 		}, {
+			key: 'componentDidMount',
+			value: function componentDidMount() {
+				this.mounted = true;
+			}
+		}, {
+			key: 'componentWillUnmount',
+			value: function componentWillUnmount() {
+				this.mounted = false;
+			}
+		}, {
 			key: '_addLayer',
 			value: function _addLayer(e) {
 				var layer = e.layer;
 
-				if (layer.options.isMagnifyingGlassLayer) return;
+				if (layer.options.isMagnifyingGlassLayer) return; // Do not add the magnifying glass layer to the list
 				var nested = function nested(option) {
 					var allOptions = _underscore2.default.values(option);
 					return _underscore2.default.some(allOptions, function (opt) {
@@ -166,13 +180,14 @@ return /******/ (function(modules) { // webpackBootstrap
 			value: function _removeLayer(e) {
 				var layer = e.layer;
 
-				if (layer.options.isMagnifyingGlassLayer) return;
+				if (layer.options.isMagnifyingGlassLayer) return; // Ignore the magnifying glass layer events
 				delete this.layers[layer._leaflet_id];
 				this._updateMagnifyingGlass();
 			}
 		}, {
 			key: '_updateMagnifyingGlass',
 			value: function _updateMagnifyingGlass() {
+				if (!this.mounted) return;
 				var map = this.context.map;
 				var _props = this.props,
 				    _props$position2 = _props.position,
