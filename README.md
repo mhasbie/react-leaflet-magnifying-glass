@@ -1,15 +1,32 @@
 # react-leaflet-magnifying-glass
 
+[![version](https://img.shields.io/npm/v/react-leaflet-magnifying-glass.svg?style=plastic)](http://npm.im/react-leaflet-magnifying-glass)
+[![react-leaflet compatibility](https://img.shields.io/npm/dependency-version/react-leaflet-magnifying-glass/peer/react-leaflet.svg?style=plastic)](https://github.com/mhasbie/react-leaflet-magnifying-glass)
+[![travis build](https://img.shields.io/travis/mhasbie/react-leaflet-magnifying-glass.svg?style=plastic)](https://travis-ci.org/mhasbie/react-leaflet-magnifying-glass)
+[![dependencies](https://img.shields.io/david/mhasbie/react-leaflet-magnifying-glass.svg?style=plastic)](https://david-dm.org/mhasbie/react-leaflet-magnifying-glass)
+[![peer dependencies](https://img.shields.io/david/peer/mhasbie/react-leaflet-magnifying-glass.svg?style=plastic)](https://david-dm.org/mhasbie/react-leaflet-magnifying-glass?type=peer)
+[![issues](https://img.shields.io/github/issues/mhasbie/react-leaflet-magnifying-glass.svg?style=plastic)](https://github.com/mhasbie/react-leaflet-magnifying-glass/issues)
+[![downloads](https://img.shields.io/npm/dt/react-leaflet-magnifying-glass.svg?style=plastic)](http://npm-stat.com/charts.html?package=react-leaflet-magnifying-glass&from=2018-01-01)
+[![MIT License](https://img.shields.io/npm/l/react-leaflet-magnifying-glass.svg?style=plastic)](http://opensource.org/licenses/MIT)
+
+
 React wrapper of [Leaflet.MagnifyingGlass](https://github.com/bbecquet/Leaflet.MagnifyingGlass)
 for [react-leaflet](https://github.com/PaulLeCam/react-leaflet).
 
 This plugin allows you to add a "magnifying glass" effect to a Leaflet map, able to display a portion of the map in a different zoom (and actually display different content).
 
-*Tested with Leaflet 1.3.1 and React-Leaflet 1.8.0*
 
 ![Screenshot](https://camo.githubusercontent.com/c5765b8606cae7394c54e3ce9aa01898aaa3e220/68747470733a2f2f7261772e6769746875622e636f6d2f62626563717565742f4c6561666c65742e4d61676e696679696e67476c6173732f6d61737465722f73637265656e73686f742e706e67)
 
-[Demo JSFiddle](https://jsfiddle.net/m_hasbie/jkssn435/)
+*Tested with Leaflet 1.4.0 and React-Leaflet 1.9.1, React-Leaflet 2.2.0*
+
+
+## Demos
+
+| Version	| Demo	|
+| ---		| ---	|
+| react-leaflet@1.9.1 | [`CodePen`](https://codepen.io/m_hasbie/full/bzoGym/) |
+| react-leaflet@2.x | [`CodePen`](https://codepen.io/m_hasbie/full/zeExOr/) |
 
 
 ## Installation
@@ -20,7 +37,7 @@ This plugin allows you to add a "magnifying glass" effect to a Leaflet map, able
 npm install --save react-leaflet-magnifying-glass
 ```
 
-## Usage example
+## Usage example for `react-leaflet` **v1**
 
 ```javascript
 import { Map, TileLayer } from 'react-leaflet';
@@ -42,7 +59,34 @@ const options = {
 </Map>
 ```
 
-### Options
+## Usage example for `react-leaflet` **v2**
+
+```javascript
+import { Map, TileLayer, withLeaflet } from 'react-leaflet';
+import MagnifyingGlassControlDefault from 'react-leaflet-magnifying-glass';
+
+// wrap `MagnifyingGlassControl` component with `withLeaflet` HOC
+const MagnifyingGlassControl = withLeaflet(MagnifyingGlassControlDefault);
+
+const options = {
+	position: 'topleft',
+	radius: 100,
+	zoomOffset: 3
+};
+
+<Map center={[2.935403, 101.448205]} zoom={10}>
+  <TileLayer
+    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+    attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+  />
+
+  <MagnifyingGlassControl {...options} />
+</Map>
+```
+
+
+
+## Options
 
 Option          | Type      | Default | Description
 --------------- | --------- | ------- | -------------
