@@ -1,0 +1,121 @@
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>react-leaflet-magnifying-glass example for react-leaflet v1</title>
+		<meta name="description" content="https://github.com/mhasbie/react-leaflet-magnifying-glass">
+
+		<link href="https://fonts.googleapis.com/css?family=Lato:300,400,400italic,700,700italic" rel="stylesheet">
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.4.0/leaflet.css" rel="stylesheet">
+		<style>
+			.leaflet-container {
+				position: absolute;
+				top: 0;
+				bottom: 0;
+				left: 0;
+				right: 0;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="container"></div>
+  
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.23.1/babel.js"></script>
+		<script src="https://unpkg.com/react@16.5.2/umd/react.production.min.js"></script>
+		<script src="https://unpkg.com/react-dom@16.5.2/umd/react-dom.production.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.4.0/leaflet-src.js"></script>
+		<script src="https://unpkg.com/react-leaflet@1.9.1/dist/react-leaflet.js"></script>
+		<script src="../dist/react-leaflet-magnifying-glass.min.js"></script>
+		<script type="text/babel">
+			const { Map, TileLayer, LayersControl, GeoJSON } = ReactLeaflet;
+			const MagnifyingGlassControl = ReactLeafletMagnifyingGlass;
+
+			class SimpleExample extends React.Component {
+				constructor(props) {
+					super(props);
+					this.state = {
+						center: [2.935403, 101.448205],
+						zoom: 3,
+						minZoom: 1,
+						maxZoom: 22,
+					}
+				}
+
+				render() {
+					const geojson = {
+					  "type": "FeatureCollection",
+					  "features": [
+					  {
+						"type": "Feature",
+						"properties": { id: 1 },
+						"geometry": {
+						"type": "Polygon",
+						"coordinates": [[
+						  [101.448205, 2.935403],
+						  [101.452839, 2.935961],
+						  [101.450479, 2.932746],
+						  [101.448205, 2.935403]
+						  ]]
+						},
+					  },
+					  {
+						"type": "Feature",
+						"properties": { id: 2 },
+						"geometry": {
+						"type": "Polygon",
+						"coordinates": [[
+						  [101.427943, 2.951690],
+						  [101.431891, 2.952804],
+						  [101.428801, 2.948518],
+						  [101.427943, 2.951690]
+						]]
+						}
+					  },
+					  {
+						"type": "Feature",
+						"properties": { id: 3 },
+						"geometry": {
+						"type": "Polygon",
+						"coordinates": [[
+						  [101.448765, 3.006379],
+						  [101.476918, 2.993179],
+						  [101.434346, 2.981693],
+						  [101.448765, 3.006379]
+						]]
+						}
+						}
+					  ]
+					};
+					const magnifyingGlassOptions = {
+						position: 'topleft',
+						forceSeparateButton: true,
+						radius: 100,
+						zoomOffset: 3
+					};
+					return (
+						<Map {...this.state}>
+							<LayersControl position="topright">
+								<LayersControl.BaseLayer name="OpenStreet Map" checked>
+									<TileLayer
+										attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
+										url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+									/>
+								</LayersControl.BaseLayer>
+								<LayersControl.BaseLayer name="ArcGIS World Topo Map">
+									<TileLayer
+										attribution="Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ, TomTom, Intermap, iPC, USGS, FAO, NPS, NRCAN, GeoBase, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), and the GIS User Community"
+										url="http://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}"
+									/>
+								</LayersControl.BaseLayer>
+							</LayersControl>
+							  
+							<GeoJSON data={geojson} />
+							<MagnifyingGlassControl {...magnifyingGlassOptions} />
+						</Map>
+					);
+				}
+			}
+
+			ReactDOM.render(<SimpleExample />, document.getElementById('container'))
+		</script>
+	</body>
+</html>

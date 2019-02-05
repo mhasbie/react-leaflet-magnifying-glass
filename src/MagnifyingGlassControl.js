@@ -1,8 +1,9 @@
 import { MapControl } from 'react-leaflet';
 import L from 'leaflet';
-// import cloneLayer from 'leaflet-clonelayer';
-import _ from 'underscore';
-import cloneLayer from './cloneLayer';
+import cloneLayer from 'leaflet-clonelayer';
+import values from 'lodash/values';
+import some from 'lodash/some';
+import has from 'lodash/has';
 import './leaflet.magnifyingglass';
 import './L.MagnifyingGlass.Control';
 import './leaflet.magnifyingglass.css';
@@ -10,8 +11,13 @@ import './Control.MagnifyingGlass.css';
 
 export default class MagnifyingGlassControl extends MapControl {
 	createLeafletElement(props) {
-		const { map } = this.context;
-		const { position = 'topleft', forceSeparateButton = false } = props;
+		const {
+			map
+		} = props.leaflet || this.context;
+		const { 
+			position = 'topleft',
+			forceSeparateButton = false
+		} = props;
 		this.layers = {};
 		this.mounted = false;
 		
@@ -33,20 +39,23 @@ export default class MagnifyingGlassControl extends MapControl {
 
 	componentDidMount() {
 		this.mounted = true;
+		this._updateMagnifyingGlass();
 	}
 
 	componentWillUnmount() {
 		this.mounted = false;
+		this._updateMagnifyingGlass();
 	}
 
 	_addLayer(e) {
 		const { layer } = e;
 		if (layer.options.isMagnifyingGlassLayer) return; // Do not add the magnifying glass layer to the list
 		const nested = (option) => {
-			const allOptions = _.values(option);
-			return _.some(allOptions, (opt) => opt instanceof L.Layer);
+			const allOptions = values(option);
+			return some(allOptions, (opt) => opt instanceof L.Layer);
 		};
-		if (!_.has(layer, '_layers') && !nested(layer.options) && _.has(layer, '_leaflet_id') && !layer.options.isMagnifyingGlassLayer) this.layers[layer._leaflet_id] = cloneLayer(layer);
+		if (!has(layer, '_layers') && !nested(layer.options) && has(layer, '_leaflet_id') && !layer.options.isMagnifyingGlassLayer)
+			this.layers[layer._leaflet_id] = cloneLayer(layer);
 		this._updateMagnifyingGlass();
 	}
 
@@ -59,8 +68,18 @@ export default class MagnifyingGlassControl extends MapControl {
 	
 	_updateMagnifyingGlass() {
 		if (!this.mounted) return;
-		const { map } = this.context;
-		const { position = 'topleft', forceSeparateButton = false, radius = 100, zoomOffset = 3, fixedZoom = -1 } = this.props;
+		
+		const {
+			map
+		} = this.props.leaflet || this.context;
+		
+		const {
+			position = 'topleft',
+			forceSeparateButton = false,
+			radius = 100,
+			zoomOffset = 3,
+			fixedZoom = -1
+		} = this.props;
 		const magnifying = map.hasLayer(this.magnifyingGlass);
 		if (magnifying) map.removeLayer(this.magnifyingGlass);
 		map.removeControl(this.leafletElement);
@@ -74,7 +93,7 @@ export default class MagnifyingGlassControl extends MapControl {
 			zoomOffset,
 			fixedZoom,
 			isMagnifyingGlassLayer: true,
-			layers: _.values(this.layers)
+			layers: values(this.layers)
 		});
 		this.leafletElement = L.control.magnifyingglass(this.magnifyingGlass, controlOptions);
 		this.leafletElement.addTo(map);
