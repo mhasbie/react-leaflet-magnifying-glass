@@ -37,7 +37,7 @@ This plugin allows you to add a "magnifying glass" effect to a Leaflet map, able
 npm install --save react-leaflet-magnifying-glass
 ```
 
-## Usage example for `react-leaflet` **v1**
+## Usage example for react-leaflet `v1`
 
 ```javascript
 import { Map, TileLayer } from 'react-leaflet';
@@ -59,7 +59,7 @@ const options = {
 </Map>
 ```
 
-## Usage example for `react-leaflet` **v2**
+## Usage example for react-leaflet `v2`
 
 ```javascript
 import { Map, TileLayer, withLeaflet } from 'react-leaflet';
